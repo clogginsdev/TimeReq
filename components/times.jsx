@@ -14,6 +14,7 @@ function Times({ handleTime, handleBlocked, selectedDay }) {
 
 const checked = handleBlocked.toString();
 const currentHour = new Date().getHours();
+console.log(currentHour);
 const currentDay = new Date().getDay() + 1;
 
 const sendTime = (time) => {
@@ -35,7 +36,7 @@ const sendTime = (time) => {
 						onClick={() => sendTime(time)}
 						key={index}
 						className={
-							checked.includes(time.value) || ((+time.value) === currentHour && currentDay === selectedDay) || ((+time.value) < currentHour && currentDay === selectedDay)
+							checked.includes(time.value) || ((+time.value) === currentHour && currentDay === selectedDay) || ((+time.value) <= currentHour && currentDay === selectedDay)
 								? "opacity-25 text-center border-2 p-2 rounded cursor-not-allowed"
 								: "border-2 p-2 text-center rounded cursor-pointer"
 						}>
