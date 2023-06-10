@@ -100,7 +100,7 @@ export default function Home() {
 						/>
 						<div className='mt-4'>
 							<h2 className='font-semibold text-2xl'>
-								Meeting With Chris Loggins
+								Meeting With Chris
 							</h2>
 							<em className={"block mt-2"}>Web Designer & Developer</em>
 							<p className='mt-2'>
