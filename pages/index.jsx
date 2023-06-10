@@ -1,5 +1,7 @@
 import { useState } from "react";
 import Head from "next/head";
+import Link from 'next/link'
+import Image from 'next/image'
 import { currentMonth, currentYear } from "../utils/calendar";
 import { apiFetch } from "../utils/fetch";
 import Calendar from "../components/calendar";
@@ -91,12 +93,14 @@ export default function Home() {
 			<main className={"main min-h-[90vh] flex items-center"}>
 				<div className='bg-white p-4 rounded shadow-md grid grid-cols-1 xl:w-1/3 gap-4 items-center mx-auto text-center'>
 					<div className={"p-4"}>
-						<img
+						<Image
 							className={
-								"rounded-full w-[100px] h-[100px] object-cover mx-auto"
+								"rounded-full object-cover mx-auto"
 							}
+							width={100}
+							height={100}
 							src='images/chris.jpeg'
-							alt="Chris Loggins' profile image."
+							alt="Chris Loggins profile image."
 						/>
 						<div className='mt-4'>
 							<h2 className='font-semibold text-2xl'>
@@ -135,11 +139,11 @@ export default function Home() {
 						)}
 					</div>
 					<div className='p-4'>
-						<a
+						<Link
 							className={"text-blue-600 font-medium hover:text-blue-800"}
 							href='/'>
 							Go to the Homepage
-						</a>
+						</Link>
 					</div>
 				</div>
 			</main>
