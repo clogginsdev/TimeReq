@@ -14,7 +14,7 @@ function Times({ handleTime, handleBlocked, selectedDay }) {
 
 const checked = handleBlocked.toString();
 const currentHour = new Date().getHours();
-console.log(currentHour);
+console.log(checked);
 const currentDay = new Date().getDay() + 1;
 
 const sendTime = (time) => {
