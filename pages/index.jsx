@@ -10,6 +10,7 @@ import { times } from "../components/times";
 import Form from "../components/Form";
 
 export default function Home() {
+	const [step, setStep] = useState('profile'); // 'profile', 'calendar', 'time', 'form'
 	const [selectedDay, setSelectedDay] = useState(null);
 	const [selectedTime, setSelectedTime] = useState(null);
 	const [blockTime, setBlockTime] = useState([]);
@@ -71,6 +72,7 @@ export default function Home() {
 		} else {
 			setSelectedDay(day);
 			setForm({ ...form, day: day });
+			setStep('time');
 		}
 	};
 
@@ -80,6 +82,7 @@ export default function Home() {
 			...form,
 			time: { hour: Number(time.slice(0, 2)), minutes: form.time.minutes },
 		});
+		setStep('form');
 	};
 
 	return (
@@ -93,21 +96,28 @@ export default function Home() {
 			<main className={"main min-h-[90vh] flex items-center"}>
 				<div className='bg-neutral-900 p-4 md:p-6 rounded-lg shadow-lg max-w-sm mx-auto text-center transition-all text-neutral-100'>
 					<div className="flex justify-center mb-6 text-sm">
-						<div className={`px-4 py-2 ${!selectedDay ? 'bg-blue-600 text-white' : 'text-gray-500'} rounded-l-full`}>
+						<div className={`px-4 py-2 ${step === 'profile' ? 'bg-blue-600 text-white' : 'text-gray-500'} rounded-l-full`}>
+							Profile
+						</div>
+						<div className={`px-4 py-2 ${step === 'calendar' ? 'bg-blue-600 text-white' : 'text-gray-500'}`}>
 							Date
 						</div>
-						<div className={`px-4 py-2 ${selectedDay && !selectedTime ? 'bg-blue-600 text-white' : 'text-gray-500'}`}>
+						<div className={`px-4 py-2 ${step === 'time' ? 'bg-blue-600 text-white' : 'text-gray-500'}`}>
 							Time
 						</div>
-						<div className={`px-4 py-2 ${selectedDay && selectedTime ? 'bg-blue-600 text-white' : 'text-gray-500'} rounded-r-full`}>
+						<div className={`px-4 py-2 ${step === 'form' ? 'bg-blue-600 text-white' : 'text-gray-500'} rounded-r-full`}>
 							Details
 						</div>
 					</div>
-					{!selectedDay && <Profile />}
+					{step === 'profile' && (
+						<div onClick={() => setStep('calendar')} className="cursor-pointer">
+							<Profile />
+						</div>
+					)}
 					<div className={"p-2"}>
-						{!selectedDay && <Calendar handleDay={handleDay} />}
+						{step === 'calendar' && <Calendar handleDay={handleDay} />}
 						<div className='mt-2'>
-							{selectedDay && !selectedTime && (
+							{step === 'time' && (
 								<Times
 									handleTime={handleTime}
 									handleBlocked={blockTime}
@@ -115,7 +125,7 @@ export default function Home() {
 								/>
 							)}
 						</div>
-						{selectedDay && selectedTime && !success && (
+						{step === 'form' && !success && (
 							<Form
 								form={form}
 								handleChange={(e) => handleFormChange(e)}
