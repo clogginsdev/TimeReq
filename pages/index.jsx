@@ -83,7 +83,7 @@ export default function Home() {
 	};
 
 	return (
-		<div className={"container mx-auto"}>
+		<div className={"container mx-auto bg-neutral-950 min-h-screen"}>
 			<Head>
 				<title>TimeReq - Make a meeting request</title>
 				<meta name='description' content='Request time on a calendar.' />
@@ -91,28 +91,36 @@ export default function Home() {
 			</Head>
 			<header></header>
 			<main className={"main min-h-[90vh] flex items-center"}>
-				<div className='bg-white p-4 rounded shadow-md grid grid-cols-1 xl:w-1/3 gap-4 items-center mx-auto text-center'>
-					<div className={"p-4"}>
-						<Image
-							className={
-								"rounded-full object-cover mx-auto"
-							}
-							width={100}
-							height={100}
-							src='images/chris.jpeg'
-							alt="Chris Loggins profile image."
-						/>
-						<div className='mt-4'>
-							<h2 className='font-semibold text-2xl'>
-								Meeting With Chris
-							</h2>
-							<em className={"block mt-2"}>Web Designer & Developer</em>
-							<p className='mt-2'>
-								Thanks for coming to schedule a meeting with me. After filling
-								out the details, I will review your meeting request and send you
-								an invite.
-							</p>
+				<div className='bg-neutral-900 p-4 md:p-6 rounded-lg shadow-lg max-w-sm mx-auto text-center transition-all text-neutral-100'>
+					<div className="flex justify-center mb-6 text-sm">
+						<div className={`px-4 py-2 ${!selectedDay ? 'bg-blue-600 text-white' : 'text-gray-500'} rounded-l-full`}>
+							Date
 						</div>
+						<div className={`px-4 py-2 ${selectedDay && !selectedTime ? 'bg-blue-600 text-white' : 'text-gray-500'}`}>
+							Time
+						</div>
+						<div className={`px-4 py-2 ${selectedDay && selectedTime ? 'bg-blue-600 text-white' : 'text-gray-500'} rounded-r-full`}>
+							Details
+						</div>
+					</div>
+					<div className="p-2 mb-4">
+						<div className="relative w-24 h-24 mx-auto mb-4">
+							<Image
+								className="rounded-full object-cover shadow-md hover:shadow-lg transition-shadow"
+								fill
+								src='/images/chris.jpeg'
+								alt="Chris Loggins profile image."
+							/>
+						</div>
+						<h2 className='font-bold text-2xl text-gray-100 mb-2'>
+							Meeting With Chris
+						</h2>
+						<em className="block text-neutral-400 mb-3">Web Designer & Developer</em>
+						<p className='text-neutral-300 text-sm leading-relaxed'>
+							Thanks for coming to schedule a meeting with me. After filling
+							out the details, I will review your meeting request and send you
+							an invite.
+						</p>
 					</div>
 					<div className={"p-2"}>
 						{!selectedDay && <Calendar handleDay={handleDay} />}
@@ -133,16 +141,22 @@ export default function Home() {
 							/>
 						)}
 						{success && (
-							<div className='p-4 bg-green-600 text-white rounded'>
+							<div className='p-6 bg-green-600 text-white rounded-lg shadow-md animate-fade-in'>
+								<svg className="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+								</svg>
 								{success}
 							</div>
 						)}
 					</div>
-					<div className='p-4'>
+					<div className='p-4 mt-4 border-t border-gray-800'>
 						<Link
-							className={"text-blue-600 font-medium hover:text-blue-800"}
+							className="inline-flex items-center text-gray-400 hover:text-gray-200 transition-colors"
 							href='/'>
-							Go to the Homepage
+							<svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+							</svg>
+							Back to Homepage
 						</Link>
 					</div>
 				</div>
