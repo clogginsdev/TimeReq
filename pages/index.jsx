@@ -110,9 +110,15 @@ export default function Home() {
 						</div>
 					</div>
 					{step === 'profile' && (
-						<div onClick={() => setStep('calendar')} className="cursor-pointer">
+						<>
 							<Profile />
-						</div>
+							<button 
+								onClick={() => setStep('calendar')}
+								className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors"
+							>
+								Continue to Calendar
+							</button>
+						</>
 					)}
 					<div className={"p-2"}>
 						{step === 'calendar' && <Calendar handleDay={handleDay} />}
