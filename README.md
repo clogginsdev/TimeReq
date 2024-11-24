@@ -27,7 +27,6 @@ Before running this application, make sure you have:
 
 - Node.js (v14 or higher)
 - MongoDB instance
-- Google Calendar API credentials
 - Plunk API key
 - Environment variables properly configured
 
@@ -48,7 +47,7 @@ ADMIN_PASSWORD=your_secure_password
 1. Clone the repository:
 ```bash
 git clone [repository-url]
-cd chris-cal
+cd timereq
 ```
 
 2. Install dependencies:
