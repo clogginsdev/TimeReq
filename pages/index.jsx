@@ -119,21 +119,21 @@ export default function Home() {
 
 	return (
 		<div className="min-h-screen bg-neutral-950">
-			<div className="container mx-auto px-4">
+			<div className="container mx-auto px-4 py-4">
 			<Head>
 				<title>TimeReq - Make a meeting request</title>
 				<meta name='description' content='Request time on a calendar.' />
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<header></header>
-			<main className="min-h-[90vh] flex items-center">
+			<main className="min-h-[90vh] flex items-center justify-center">
 				<div className='backdrop-blur-xl bg-neutral-900/90 p-6 md:p-8 rounded-2xl max-w-sm w-full mx-auto text-center transition-all text-neutral-100 shadow-xl border border-neutral-800/50'>
 					{step === 'profile' && (
 						<>
 							<Profile />
 							<button 
+								className="mt-4 bg-emerald-600 hover:bg-emerald-500 rounded px-6 py-3 text-white font-medium transition-colors text-sm w-full flex items-center justify-center"
 								onClick={() => setStep('calendar')}
-								className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors"
 							>
 								Continue
 							</button>
@@ -168,14 +168,15 @@ export default function Home() {
 					</div>
 					{step !== 'profile' && (
 						<div className='p-4 mt-4 border-t border-gray-800'>
-							<button
-								className="inline-flex items-center text-gray-400 hover:text-gray-200 transition-colors"
+							<div
+							role="button"
+								className="inline-flex items-center text-neutral-200 hover:text-neutral-300"
 								onClick={resetState}>
 								<svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
 								</svg>
 								Back to Homepage
-							</button>
+							</div>
 						</div>
 					)}
 				</div>
