@@ -7,7 +7,7 @@ export default handler;
 
 export async function getMeetings() {
   return await (await dbPromise)
-    .db()
+    .db("timereqs")
     .collection("meetings")
     .find()
     .toArray();
