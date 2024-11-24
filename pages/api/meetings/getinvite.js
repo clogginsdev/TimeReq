@@ -1,15 +1,12 @@
 import createHandler from "next-connect"
 const ics = require('ics');
-const sgMail = require('@sendgrid/mail');
 const fs = require('fs');
 const path = require('path');
 
 const handler = createHandler();
 export default handler;
 
-// Set your SendGrid API key
-const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
-sgMail.setApiKey(SENDGRID_API_KEY);
+const PLUNK_API_KEY = process.env.PLUNK_API_KEY;
 
 // Receive a POST request from the client.
 handler.post(async (req, res) => {
@@ -53,22 +50,24 @@ handler.post(async (req, res) => {
 
     const attachment = fs.readFileSync(filename).toString("base64");
 
-    // Send the email with the attachment
-    const msg = {
-        to: 'chris@loggins.cc',
-        from: 'chris@loggins.cc',
-        subject: `Meeting Invitation: Chris & ${name}` ,
-        text: 'Hey Chris, you have a new meeting request.',
-        attachments: [
-            {
-                content: attachment,
+    // Send the email with Plunk
+    await fetch('https://api.useplunk.com/v1/send', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${PLUNK_API_KEY}`
+        },
+        body: JSON.stringify({
+            to: 'chris@loggins.cc',
+            subject: `Meeting Invitation: Chris & ${name}`,
+            body: `Hey Chris, you have a new meeting request.`,
+            attachments: [{
                 filename: `${event.start.join('')}_invite.ics`,
-                type: 'text/calendar',
-            }
-        ]
-    };
-
-    await sgMail.send(msg);
+                content: attachment,
+                contentType: 'text/calendar'
+            }]
+        })
+    });
 
     // Return the download link to the client
     res.status(200).json({message: "Thank you! Please look out for the invite in your email."});
