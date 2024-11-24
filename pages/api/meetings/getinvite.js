@@ -63,9 +63,9 @@ handler.post(async (req, res) => {
             "Authorization": `Bearer ${PLUNK_API_KEY}`
         },
         body: JSON.stringify({
-            to: 'chris@loggins.cc',
+            to: [email, 'chris@loggins.cc'],
             subject: `Meeting Invitation: Chris & ${name}`,
-            body: `Hey Chris, you have a new meeting request.`,
+            body: `Meeting request confirmed. The calendar invite is attached.`,
             attachments: [{
                 filename: `${event.start.join('')}_invite.ics`,
                 content: attachment,
