@@ -95,7 +95,7 @@ export default function Home() {
 			</Head>
 			<header></header>
 			<main className="min-h-[90vh] flex items-center">
-				<div className='bg-neutral-900 p-4 md:p-6 rounded-lg shadow-lg max-w-sm mx-auto text-center transition-all text-neutral-100'>
+				<div className='bg-neutral-900 p-4 md:p-6 rounded-lg max-w-sm mx-auto text-center transition-all text-neutral-100'>
 					{step === 'profile' && (
 						<>
 							<Profile />
@@ -103,7 +103,7 @@ export default function Home() {
 								onClick={() => setStep('calendar')}
 								className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors"
 							>
-								Continue to Calendar
+								Continue
 							</button>
 						</>
 					)}

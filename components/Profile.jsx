@@ -14,7 +14,7 @@ export default function Profile() {
       <h2 className='font-bold text-2xl text-gray-100 mb-2'>
         Meeting With Chris
       </h2>
-      <em className="block text-neutral-400 mb-3">Web Designer & Developer</em>
+      <em className="block text-neutral-400 mb-3">Software Developer | UI Designer</em>
       <p className='text-neutral-300 text-sm leading-relaxed'>
         Thanks for coming to schedule a meeting with me. After filling
         out the details, I will review your meeting request and send you
