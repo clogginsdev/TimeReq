@@ -2,11 +2,20 @@ import createHandler from "next-connect"
 const ics = require('ics');
 const fs = require('fs');
 const path = require('path');
+const nodemailer = require('nodemailer');
 
 const handler = createHandler();
 export default handler;
 
-const PLUNK_API_KEY = process.env.PLUNK_API_KEY;
+const transporter = nodemailer.createTransport({
+    host: "smtp.useplunk.com",
+    secure: true, // Using SSL
+    port: 465,
+    auth: {
+        user: "plunk",
+        pass: process.env.PLUNK_API_KEY
+    }
+});
 
 // Receive a POST request from the client.
 handler.post(async (req, res) => {
@@ -55,28 +64,18 @@ handler.post(async (req, res) => {
 
     const attachment = fs.readFileSync(filename).toString("base64");
 
-    // Send the email with Plunk
-    const plunkResponse = await fetch('https://api.useplunk.com/v1/send', {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${PLUNK_API_KEY}`
-        },
-        body: JSON.stringify({
-            to: [email, 'chris@loggins.cc'],
-            subject: `Meeting Invitation: Chris & ${name}`,
-            body: `Meeting request confirmed. The calendar invite is attached.`,
-            attachments: [{
-                filename: `${event.start.join('')}_invite.ics`,
-                content: attachment,
-                contentType: 'text/calendar'
-            }]
-        })
+    // Send the email with Nodemailer
+    await transporter.sendMail({
+        from: "chris@loggins.cc",
+        to: [email, 'chris@loggins.cc'],
+        subject: `Meeting Invitation: Chris & ${name}`,
+        text: `Meeting request confirmed. The calendar invite is attached.`,
+        attachments: [{
+            filename: `${event.start.join('')}_invite.ics`,
+            content: value,
+            contentType: 'text/calendar'
+        }]
     });
-
-    if (!plunkResponse.ok) {
-        throw new Error(`Failed to send email: ${plunkResponse.status}`);
-    }
 
     // Return the download link to the client
     res.status(200).json({message: "Thank you! Please look out for the invite in your email."});
