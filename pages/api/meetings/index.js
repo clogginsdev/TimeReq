@@ -5,6 +5,18 @@ const handler = createHandler();
 export default handler;
 
 
+export async function checkTimeAvailable(timeString) {
+  const db = await dbPromise;
+  const existingMeeting = await db
+    .db("timereqs")
+    .collection("meetings")
+    .findOne({
+      start: timeString,
+      taken: true
+    });
+  return !existingMeeting;
+}
+
 export async function getMeetings() {
   return await (await dbPromise)
     .db("timereqs")
@@ -38,7 +50,8 @@ handler.post(async (req, res) => {
     hour = 0;
   }
 
-  const date = [year, month, day, hour, time.minutes]
+  // Format time as "HH:MM AM/PM"
+  const formattedTime = `${time.hour.toString().padStart(2, '0')}:${time.minutes.toString().padStart(2, '0')} ${time.period}`;
 
   const { insertedId } = await (
     await dbPromise
@@ -46,7 +59,8 @@ handler.post(async (req, res) => {
     .db()
     .collection("meetings")
     .insertOne({
-      start: date,
+      start: formattedTime,
+      taken: true,
       duration: { hours: Math.floor(duration / 60), minutes: duration % 60 },
       title: "Chris x " + name + " Meeting",
       description,
