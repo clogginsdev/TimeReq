@@ -21,9 +21,23 @@ export default function Home() {
 		name: "",
 		email: "",
 		description: "",
-	});
+	};
 
+	const [step, setStep] = useState('profile'); // 'profile', 'calendar', 'time', 'form'
+	const [selectedDay, setSelectedDay] = useState(null);
+	const [selectedTime, setSelectedTime] = useState(null);
+	const [blockTime, setBlockTime] = useState([]);
+	const [form, setForm] = useState(initialForm);
 	const [success, setSuccess] = useState("");
+
+	const resetState = () => {
+		setStep('profile');
+		setSelectedDay(null);
+		setSelectedTime(null);
+		setBlockTime([]);
+		setForm(initialForm);
+		setSuccess("");
+	};
 
 	async function checkMeeting() {
 		try {
