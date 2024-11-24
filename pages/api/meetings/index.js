@@ -39,7 +39,7 @@ handler.post(async (req, res) => {
     .collection("meetings")
     .insertOne({
       start: date,
-      duration: { hours: 0, minutes: 30 },
+      duration: { hours: Math.floor(duration / 60), minutes: duration % 60 },
       title: "Chris x " + name + " Meeting",
       description,
       location: "Google Meet or Zoom",

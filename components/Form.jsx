@@ -37,6 +37,21 @@ function Form({ handleChange, form, handleSubmit }) {
           className="py-2 px-4 w-full rounded-sm bg-neutral-800 text-neutral-100"
         />
       </div>
+      <div className="input-group mt-6">
+        <label className="font-medium block mb-2" htmlFor="duration">
+          Meeting Duration (minutes)
+        </label>
+        <select
+          name="duration"
+          value={form.duration}
+          onChange={handleChange}
+          className="py-3 px-4 w-full rounded-sm bg-neutral-800 text-neutral-100"
+        >
+          <option value="30">30 minutes</option>
+          <option value="60">60 minutes</option>
+          <option value="90">90 minutes</option>
+        </select>
+      </div>
       <button
         onClick={() => handleSubmit()}
         className="mt-4 bg-neutral-700 hover:bg-neutral-600 rounded px-6 py-3 text-white font-medium transition-colors text-sm"
