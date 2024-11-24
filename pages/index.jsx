@@ -10,11 +10,7 @@ import { times } from "../components/times";
 import Form from "../components/Form";
 
 export default function Home() {
-	const [step, setStep] = useState('profile'); // 'profile', 'calendar', 'time', 'form'
-	const [selectedDay, setSelectedDay] = useState(null);
-	const [selectedTime, setSelectedTime] = useState(null);
-	const [blockTime, setBlockTime] = useState([]);
-	const [form, setForm] = useState({
+	const initialForm = {
 		year: currentYear,
 		month: currentMonth,
 		day: "",
@@ -144,7 +140,7 @@ export default function Home() {
 						<div className='p-4 mt-4 border-t border-gray-800'>
 							<button
 								className="inline-flex items-center text-gray-400 hover:text-gray-200 transition-colors"
-								onClick={() => setStep('profile')}>
+								onClick={resetState}>
 								<svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
 								</svg>
