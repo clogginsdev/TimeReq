@@ -1,7 +1,5 @@
 import createHandler from "next-connect"
-const ics = require('ics');
-const fs = require('fs');
-const path = require('path');
+import { createGoogleCalendarEvent } from "../../../utils/googleCalendar";
 const nodemailer = require('nodemailer');
 
 const handler = createHandler();
@@ -9,7 +7,7 @@ export default handler;
 
 const transporter = nodemailer.createTransport({
     host: "smtp.useplunk.com",
-    secure: true, // Using SSL
+    secure: true,
     port: 465,
     auth: {
         user: "plunk",
@@ -48,37 +46,19 @@ handler.post(async (req, res) => {
         ],
     };
 
-    const {error, value} = ics.createEvent(event);
-    if (error) {
-        console.error('ICS Creation Error:', error);
-        return res.status(500).json({ error: 'Failed to create calendar invite' });
-    }
+    // Create Google Calendar event
+    const calendarEvent = await createGoogleCalendarEvent(event);
 
-    // Ensure the invites directory exists
-    const invitesDir = path.join(process.cwd(), 'public/invites');
-    fs.mkdirSync(invitesDir, { recursive: true });
-
-    // Save the file to the file system
-    const filename = path.join(invitesDir, `${event.start.join('')}_invite.ics`);
-    fs.writeFileSync(filename, value);
-
-    const attachment = fs.readFileSync(filename).toString("base64");
-
-    // Send the email with Nodemailer
+    // Send confirmation email with Google Meet link
     await transporter.sendMail({
-        from: "hellp@lggs.dev",
+        from: "chris@loggins.cc",
         to: [email, 'chris@loggins.cc'],
-        subject: `Meeting Invitation: Chris & ${name}`,
-        text: `Meeting request confirmed. The calendar invite is attached.`,
-        alternatives: [{
-            contentType: 'text/calendar; method=REQUEST',
-            content: Buffer.from(value)
-        }],
-        icalEvent: {
-            filename: `${event.start.join('')}_invite.ics`,
-            method: 'REQUEST',
-            content: value
-        }
+        subject: `Meeting Confirmation: Chris & ${name}`,
+        html: `
+            <p>Your meeting has been scheduled!</p>
+            <p>Join with Google Meet: <a href="${calendarEvent.hangoutLink}">${calendarEvent.hangoutLink}</a></p>
+            <p>The event has been added to your Google Calendar.</p>
+        `
     });
 
     // Return the download link to the client
