@@ -96,20 +96,6 @@ export default function Home() {
 			<header></header>
 			<main className={"main min-h-[90vh] flex items-center"}>
 				<div className='bg-neutral-900 p-4 md:p-6 rounded-lg shadow-lg max-w-sm mx-auto text-center transition-all text-neutral-100'>
-					<div className="flex justify-center mb-6 text-sm">
-						<div className={`px-4 py-2 ${step === 'profile' ? 'bg-blue-600 text-white' : 'text-gray-500'} rounded-l-full`}>
-							Profile
-						</div>
-						<div className={`px-4 py-2 ${step === 'calendar' ? 'bg-blue-600 text-white' : 'text-gray-500'}`}>
-							Date
-						</div>
-						<div className={`px-4 py-2 ${step === 'time' ? 'bg-blue-600 text-white' : 'text-gray-500'}`}>
-							Time
-						</div>
-						<div className={`px-4 py-2 ${step === 'form' ? 'bg-blue-600 text-white' : 'text-gray-500'} rounded-r-full`}>
-							Details
-						</div>
-					</div>
 					{step === 'profile' && (
 						<>
 							<Profile />
