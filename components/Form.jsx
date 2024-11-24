@@ -10,7 +10,7 @@ function Form({ handleChange, form, handleSubmit }) {
           name="name"
           value={form.name}
           onChange={handleChange}
-          className="py-4 px-8 w-full rounded-sm bg-gray-100"
+          className="py-3 px-4 w-full rounded-sm bg-neutral-800 text-neutral-100"
         />
       </div>
       <div className="input-group mt-6">
@@ -22,7 +22,7 @@ function Form({ handleChange, form, handleSubmit }) {
           name="email"
           value={form.email}
           onChange={handleChange}
-          className="py-4 px-8 rounded-sm w-full bg-gray-100"
+          className="py-3 px-4 rounded-sm w-full bg-neutral-800 text-neutral-100"
         />
       </div>
       <div className="input-group mt-6">
@@ -34,12 +34,12 @@ function Form({ handleChange, form, handleSubmit }) {
           value={form.description}
           onChange={handleChange}
           placeholder="What's the purpose of our meeting?"
-          className="py-2 px-4 w-full rounded-sm bg-gray-100"
+          className="py-2 px-4 w-full rounded-sm bg-neutral-800 text-neutral-100"
         />
       </div>
       <button
         onClick={() => handleSubmit()}
-        className="mt-6 bg-green-600 rounded px-8 py-4 text-white font-medium"
+        className="mt-4 bg-neutral-700 hover:bg-neutral-600 rounded px-6 py-3 text-white font-medium transition-colors text-sm"
       >
         Confirm Meeting
       </button>
