@@ -28,9 +28,17 @@ handler.get(async (req, res) => {
 
 handler.post(async (req, res) => {
   try {
-    const { year, month, day, time, email, name, description } = req.body;
+    const { year, month, day, time, email, name, description, duration } = req.body;
 
-  const date = [year, month, day, time.hour, time.minutes]
+  // Convert time to 24-hour format
+  let hour = time.hour;
+  if (time.period === 'PM' && hour !== 12) {
+    hour += 12;
+  } else if (time.period === 'AM' && hour === 12) {
+    hour = 0;
+  }
+
+  const date = [year, month, day, hour, time.minutes]
 
   const { insertedId } = await (
     await dbPromise
