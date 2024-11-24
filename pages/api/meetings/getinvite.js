@@ -1,5 +1,4 @@
 import createHandler from "next-connect"
-import { createGoogleCalendarEvent } from "../../../utils/googleCalendar";
 const nodemailer = require('nodemailer');
 
 const handler = createHandler();
@@ -15,59 +14,57 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// Receive a POST request from the client.
 handler.post(async (req, res) => {
     try {
         const {day, time, email, name, description} = req.body;
 
-    const date = {
-        year: new Date().getFullYear(),
-        month: new Date().getMonth() + 1,
-        day: day,
-    };
+        const meetingDate = new Date();
+        meetingDate.setDate(day);
+        meetingDate.setHours(time.hour);
+        meetingDate.setMinutes(time.minutes);
 
-    const event = {
-        start: [date.year, date.month, date.day, time.hour, time.minutes],
-        duration: {hours: 0, minutes: 30},
-        title: "Chris_x_" + name + "_Meeting",
-        description,
-        location: "Google Meet or Zoom",
-        status: "CONFIRMED",
-        busyStatus: "BUSY",
-        organizer: {name: "Chris Loggins", email: "chris@loggins.cc"},
-        attendees: [
-            {
-                name,
-                email,
-                rsvp: true,
-                partstat: "ACCEPTED",
-                role: "REQ-PARTICIPANT",
-            },
-        ],
-    };
+        // Send confirmation email to the requester
+        await transporter.sendMail({
+            from: "chris@loggins.cc",
+            to: email,
+            subject: `Meeting Request Received`,
+            html: `
+                <p>Hi ${name},</p>
+                <p>Thank you for your meeting request. Chris will review the details and get back to you soon.</p>
+                <p>Requested meeting details:</p>
+                <ul>
+                    <li>Date: ${meetingDate.toLocaleDateString()}</li>
+                    <li>Time: ${meetingDate.toLocaleTimeString()}</li>
+                    <li>Description: ${description}</li>
+                </ul>
+            `
+        });
 
-    // Create Google Calendar event
-    const calendarEvent = await createGoogleCalendarEvent(event);
+        // Send notification email to Chris
+        await transporter.sendMail({
+            from: "chris@loggins.cc",
+            to: "chris@loggins.cc",
+            subject: `New Meeting Request from ${name}`,
+            html: `
+                <p>New meeting request received:</p>
+                <ul>
+                    <li>Name: ${name}</li>
+                    <li>Email: ${email}</li>
+                    <li>Date: ${meetingDate.toLocaleDateString()}</li>
+                    <li>Time: ${meetingDate.toLocaleTimeString()}</li>
+                    <li>Description: ${description}</li>
+                </ul>
+            `
+        });
 
-    // Send confirmation email with Google Meet link
-    await transporter.sendMail({
-        from: "chris@loggins.cc",
-        to: [email, 'chris@loggins.cc'],
-        subject: `Meeting Confirmation: Chris & ${name}`,
-        html: `
-            <p>Your meeting has been scheduled!</p>
-            <p>Join with Google Meet: <a href="${calendarEvent.hangoutLink}">${calendarEvent.hangoutLink}</a></p>
-            <p>The event has been added to your Google Calendar.</p>
-        `
-    });
-
-    // Return the download link to the client
-    res.status(200).json({message: "Thank you! Please look out for the invite in your email."});
+        res.status(200).json({
+            message: "Thank you! Your request has been received. Chris will review and confirm the meeting details soon."
+        });
 
     } catch (error) {
-        console.error('Meeting Invite Error:', error);
+        console.error('Meeting Request Error:', error);
         res.status(500).json({ 
-            error: 'Failed to process meeting invite',
+            error: 'Failed to process meeting request',
             details: process.env.NODE_ENV === 'development' ? error.message : undefined
         });
     }
