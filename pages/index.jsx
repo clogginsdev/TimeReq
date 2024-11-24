@@ -30,7 +30,13 @@ export default function Home() {
 	const [success, setSuccess] = useState("");
 
 	async function checkMeeting() {
-		return await apiFetch("meetings", { method: "GET" });
+		try {
+			const meetings = await apiFetch("meetings", { method: "GET" });
+			return meetings || [];
+		} catch (error) {
+			console.error('Failed to check meetings:', error);
+			return [];
+		}
 	}
 
 	async function persistMeeting() {
