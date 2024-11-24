@@ -42,7 +42,7 @@ handler.post(async (req, res) => {
 
         // Send notification email to Chris
         await transporter.sendMail({
-            from: "chris@loggins.cc",
+            from: `${process.env.NEXT_PUBLIC_FROM_EMAIL}`,
             to: "chris@loggins.cc",
             subject: `New Meeting Request from ${name}`,
             html: `
