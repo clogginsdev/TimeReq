@@ -86,7 +86,8 @@ export default function Home() {
 	};
 
 	return (
-		<div className={"container mx-auto bg-neutral-950 min-h-screen"}>
+		<div className="min-h-screen bg-neutral-950">
+			<div className="container mx-auto">
 			<Head>
 				<title>TimeReq - Make a meeting request</title>
 				<meta name='description' content='Request time on a calendar.' />
@@ -161,6 +162,7 @@ export default function Home() {
 			</main>
 
 			<footer className={"footer"}></footer>
+			</div>
 		</div>
 	);
 }
