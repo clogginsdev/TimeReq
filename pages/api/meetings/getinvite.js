@@ -66,15 +66,19 @@ handler.post(async (req, res) => {
 
     // Send the email with Nodemailer
     await transporter.sendMail({
-        from: "hellp@lggs.dev",
+        from: "chris@loggins.cc",
         to: [email, 'chris@loggins.cc'],
         subject: `Meeting Invitation: Chris & ${name}`,
         text: `Meeting request confirmed. The calendar invite is attached.`,
-        attachments: [{
+        alternatives: [{
+            contentType: 'text/calendar; method=REQUEST',
+            content: Buffer.from(value)
+        }],
+        icalEvent: {
             filename: `${event.start.join('')}_invite.ics`,
-            content: value,
-            contentType: 'text/calendar'
-        }]
+            method: 'REQUEST',
+            content: value
+        }
     });
 
     // Return the download link to the client
