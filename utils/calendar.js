@@ -9,8 +9,11 @@ export const startDay = new Date(
   new Date().getFullYear(),
   currentMonth,
   1
-).getDay();
-export const daysInMonth = new Date(
+).toLocaleString('en-US', {
+  hour: 'numeric',
+  minute: '2-digit',
+  hour12: true
+}).toUpperCase();export const daysInMonth = new Date(
   new Date().getFullYear(),
   currentMonth + 1,
   0

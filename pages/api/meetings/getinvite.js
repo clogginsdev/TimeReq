@@ -20,12 +20,20 @@ handler.post(async (req, res) => {
 
         const meetingDate = new Date();
         meetingDate.setDate(day);
-        meetingDate.setHours(time.hour);
-        meetingDate.setMinutes(time.minutes);
+        
+        // Parse time string (e.g., "1:00 PM")
+        const [timeStr, period] = time.split(' ');
+        const [hours, minutes] = timeStr.split(':').map(Number);
+        let hour = hours;
+        if (period === 'PM' && hours !== 12) hour += 12;
+        if (period === 'AM' && hours === 12) hour = 0;
+        
+        meetingDate.setHours(hour);
+        meetingDate.setMinutes(minutes);
 
         // Send confirmation email to the requester
         await transporter.sendMail({
-            from: process.env.NEXT_PUBLIC_FROM_EMAIL,
+            from: "hellp@lggs.dev",
             to: email,
             subject: `Meeting Request Received`,
             html: `
@@ -41,8 +49,9 @@ handler.post(async (req, res) => {
         });
 
         // Send notification email to Chris
+        console.log("EMAIL", process.env.NEXT_PUBLIC_FROM_EMAIL);
         await transporter.sendMail({
-            from: process.env.NEXT_PUBLIC_FROM_EMAIL,
+            from: "hellp@lggs.dev",
             to: "chris@loggins.cc",
             subject: `New Meeting Request from ${name}`,
             html: `
@@ -69,4 +78,3 @@ handler.post(async (req, res) => {
         });
     }
 });
-

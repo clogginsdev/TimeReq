@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 body {
-    @apply bg-[#FFFAF5];
+    @apply bg-neutral-800;
 }

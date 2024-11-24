@@ -9,14 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@sendgrid/mail": "^7.7.0",
+    "@googleapis/calendar": "^9.7.9",
+    "@sendgrid/mail": "^8.1.4",
     "autoprefixer": "^10.4.13",
     "dot-env": "^0.0.1",
     "dotenv": "^16.0.3",
     "ics": "^2.41.0",
     "mongodb": "^4.12.1",
-    "next": "13.0.4",
+    "next": "^15.0.3",
     "next-connect": "^0.13.0",
+    "nodemailer": "^6.9.16",
     "postcss": "^8.4.19",
     "react": "18.2.0",
     "react-dom": "18.2.0",

@@ -14,10 +14,7 @@ export default function Home() {
 		year: currentYear,
 		month: currentMonth,
 		day: "",
-		time: {
-			hour: 0,
-			minutes: 0,
-		},
+		time: "",
 		name: "",
 		email: "",
 		description: "",
@@ -29,6 +26,18 @@ export default function Home() {
 	const [blockTime, setBlockTime] = useState([]);
 	const [form, setForm] = useState(initialForm);
 	const [success, setSuccess] = useState("");
+
+	const convertTo12HourFormat = (hour) => {
+		if (hour === 0) return { hour: 12, period: 'AM' };
+		if (hour === 12) return { hour: 12, period: 'PM' };
+		if (hour > 12) return { hour: hour - 12, period: 'PM' };
+		return { hour: hour, period: 'AM' };
+	};
+
+	const formatTimeForDB = (hour, minutes) => {
+		const { hour: formattedHour, period } = convertTo12HourFormat(hour);
+		return `${formattedHour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} ${period}`;
+	};
 
 	const resetState = () => {
 		setStep('profile');
@@ -50,11 +59,17 @@ export default function Home() {
 	}
 
 	async function persistMeeting() {
+		// First create the meeting in the database
 		await apiFetch("meetings", {
 			method: "POST",
-			body: form,
+			body: {
+				...form,
+				year: currentYear,
+				month: currentMonth
+			},
 		});
 
+		// Then send the email notifications
 		const getSuccessMessage = await apiFetch("meetings/getinvite", {
 			method: "POST",
 			body: form,
@@ -75,10 +90,11 @@ export default function Home() {
 			const start = item.start.toString();
 
 			times.map((time) => {
-				const date = [2023, currentMonth, day, time.value, 0].toString();
+				const date = [2023, currentMonth, day, time.value].toString();
+				
 				if (start.includes(date)) {
 					setBlockTime((prevState) => {
-						return [...prevState, time.value.toString()];
+						return [...prevState, time.value];
 					});
 				}
 			});
@@ -96,7 +112,7 @@ export default function Home() {
 		setSelectedTime(time);
 		setForm({
 			...form,
-			time: { hour: Number(time.slice(0, 2)), minutes: form.time.minutes },
+			time: time
 		});
 		setStep('form');
 	};
@@ -111,7 +127,7 @@ export default function Home() {
 			</Head>
 			<header></header>
 			<main className="min-h-[90vh] flex items-center">
-				<div className='backdrop-blur-xl bg-neutral-900/90 p-6 md:p-8 rounded-2xl max-w-sm mx-auto text-center transition-all text-neutral-100 shadow-xl border border-neutral-800/50'>
+				<div className='backdrop-blur-xl bg-neutral-900/90 p-6 md:p-8 rounded-2xl max-w-sm w-full mx-auto text-center transition-all text-neutral-100 shadow-xl border border-neutral-800/50'>
 					{step === 'profile' && (
 						<>
 							<Profile />

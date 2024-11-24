@@ -42,41 +42,42 @@ handler.post(async (req, res) => {
   try {
     const { year, month, day, time, email, name, description, duration } = req.body;
 
-  // Convert time to 24-hour format
-  let hour = time.hour;
-  if (time.period === 'PM' && hour !== 12) {
-    hour += 12;
-  } else if (time.period === 'AM' && hour === 12) {
-    hour = 0;
-  }
+    // Format time as 12-hour format with AM/PM
+    const formattedTime = new Date(year, month, day, time.hour, time.minutes)
+      .toLocaleString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      });
 
-  const date = [year, month, day, hour, time.minutes];
+    const date = [year, month, day, formattedTime];
 
-  const { insertedId } = await (
-    await dbPromise
-  )
-    .db()
-    .collection("meetings")
-    .insertOne({
-      start: date,
-      taken: true,
-      duration: { hours: Math.floor(duration / 60), minutes: duration % 60 },
-      title: "Chris x " + name + " Meeting",
-      description,
-      location: "Google Meet or Zoom",
-      status: "CONFIRMED",
-      busyStatus: "BUSY",
-      organizer: { name: "Chris Loggins", email: "chris@loggins.cc" },
-      attendees: [
-        {
-          name,
-          email,
-          rsvp: true,
-          partstat: "ACCEPTED",
-          role: "REQ-PARTICIPANT",
-        },
-      ],
-    });
+    const { insertedId } = await (
+      await dbPromise
+    )
+      .db()
+      .collection("meetings")
+      .insertOne({
+        start: date,
+        timeString: formattedTime, // Store formatted time string
+        taken: true,
+        duration: { hours: Math.floor(duration / 60), minutes: duration % 60 },
+        title: "Chris x " + name + " Meeting",
+        description,
+        location: "Google Meet or Zoom",
+        status: "CONFIRMED",
+        busyStatus: "BUSY",
+        organizer: { name: "Chris Loggins", email: "chris@loggins.cc" },
+        attendees: [
+          {
+            name,
+            email,
+            rsvp: true,
+            partstat: "ACCEPTED",
+            role: "REQ-PARTICIPANT",
+          },
+        ],
+      });
     res.json({ _id: insertedId });
   } catch (error) {
     console.error('Create Meeting Error:', error);
@@ -86,5 +87,4 @@ handler.post(async (req, res) => {
     });
   }
 });
-
 
