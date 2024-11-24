@@ -66,7 +66,7 @@ handler.post(async (req, res) => {
 
     // Send the email with Nodemailer
     await transporter.sendMail({
-        from: "chris@loggins.cc",
+        from: "hellp@lggs.dev",
         to: [email, 'chris@loggins.cc'],
         subject: `Meeting Invitation: Chris & ${name}`,
         text: `Meeting request confirmed. The calendar invite is attached.`,
