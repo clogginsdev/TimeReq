@@ -86,8 +86,8 @@ export default function Home() {
 	};
 
 	return (
-		<div className="min-h-screen bg-blue-950">
-			<div className="container mx-auto">
+		<div className="min-h-screen bg-gradient-to-b from-gray-900 to-black">
+			<div className="container mx-auto px-4">
 			<Head>
 				<title>TimeReq - Make a meeting request</title>
 				<meta name='description' content='Request time on a calendar.' />
@@ -95,7 +95,7 @@ export default function Home() {
 			</Head>
 			<header></header>
 			<main className="min-h-[90vh] flex items-center">
-				<div className='bg-neutral-900 p-4 md:p-6 rounded-lg max-w-sm mx-auto text-center transition-all text-neutral-100'>
+				<div className='backdrop-blur-xl bg-neutral-900/90 p-6 md:p-8 rounded-2xl max-w-sm mx-auto text-center transition-all text-neutral-100 shadow-xl border border-neutral-800/50'>
 					{step === 'profile' && (
 						<>
 							<Profile />
