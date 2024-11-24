@@ -29,7 +29,7 @@ const sendTime = (time) => {
 	return (
 		<div>
 			<h2 className='text-xl mb-4 font-medium'>Select A Time</h2>
-			<div className={"grid grid-cols-3 items-center gap-6"}>
+			<div className={"grid grid-cols-3 items-center gap-3"}>
 				{times.map((time, index) => (
 
 					<div
@@ -37,8 +37,8 @@ const sendTime = (time) => {
 						key={index}
 						className={
 							checked.includes(time.value) || ((+time.value) === currentHour && currentDay === selectedDay) || ((+time.value) <= currentHour && currentDay === selectedDay)
-								? "opacity-25 text-center border-2 p-2 rounded cursor-not-allowed"
-								: "border-2 p-2 text-center rounded cursor-pointer"
+								? "opacity-25 text-center border border-neutral-700 p-2 rounded cursor-not-allowed bg-neutral-800"
+								: "border border-neutral-700 p-2 text-center rounded cursor-pointer hover:bg-neutral-800 transition-colors"
 						}>
 						{time.name}
 					</div>
