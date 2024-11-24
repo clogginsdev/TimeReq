@@ -94,7 +94,7 @@ export default function Home() {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<header></header>
-			<main className={"main min-h-[90vh] flex items-center"}>
+			<main className="min-h-[90vh] flex items-center">
 				<div className='bg-neutral-900 p-4 md:p-6 rounded-lg shadow-lg max-w-sm mx-auto text-center transition-all text-neutral-100'>
 					{step === 'profile' && (
 						<>
@@ -149,7 +149,7 @@ export default function Home() {
 				</div>
 			</main>
 
-			<footer className={"footer"}></footer>
+			<footer></footer>
 			</div>
 		</div>
 	);
