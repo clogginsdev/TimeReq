@@ -45,8 +45,12 @@ handler.post(async (req, res) => {
         return res.status(500).json({ error: 'Failed to create calendar invite' });
     }
 
+    // Ensure the invites directory exists
+    const invitesDir = path.join(process.cwd(), 'public/invites');
+    fs.mkdirSync(invitesDir, { recursive: true });
+
     // Save the file to the file system
-    const filename = path.join(process.cwd(), 'public/invites', `${event.start.join('')}_invite.ics`);
+    const filename = path.join(invitesDir, `${event.start.join('')}_invite.ics`);
     fs.writeFileSync(filename, value);
 
     const attachment = fs.readFileSync(filename).toString("base64");
