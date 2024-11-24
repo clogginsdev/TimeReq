@@ -14,11 +14,21 @@ export async function getMeetings() {
 }
 
 handler.get(async (req, res) => {
-  return res.json(await getMeetings());
+  try {
+    const meetings = await getMeetings();
+    return res.json(meetings);
+  } catch (error) {
+    console.error('Get Meetings Error:', error);
+    return res.status(500).json({ 
+      error: 'Failed to fetch meetings',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
 });
 
 handler.post(async (req, res) => {
-  const { year, month, day, time, email, name, description } = JSON.parse(req.body);
+  try {
+    const { year, month, day, time, email, name, description } = req.body;
 
   const date = [year, month, day, time.hour, time.minutes]
 
@@ -46,7 +56,14 @@ handler.post(async (req, res) => {
         },
       ],
     });
-  res.json({ _id: insertedId });
+    res.json({ _id: insertedId });
+  } catch (error) {
+    console.error('Create Meeting Error:', error);
+    res.status(500).json({ 
+      error: 'Failed to create meeting',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
 });
 
 

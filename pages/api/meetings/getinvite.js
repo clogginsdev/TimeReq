@@ -10,7 +10,8 @@ const PLUNK_API_KEY = process.env.PLUNK_API_KEY;
 
 // Receive a POST request from the client.
 handler.post(async (req, res) => {
-    const {day, time, email, name, description} = JSON.parse(req.body);
+    try {
+        const {day, time, email, name, description} = req.body;
 
     const date = {
         year: new Date().getFullYear(),
@@ -40,8 +41,8 @@ handler.post(async (req, res) => {
 
     const {error, value} = ics.createEvent(event);
     if (error) {
-        console.log(error);
-        return;
+        console.error('ICS Creation Error:', error);
+        return res.status(500).json({ error: 'Failed to create calendar invite' });
     }
 
     // Save the file to the file system
@@ -51,7 +52,7 @@ handler.post(async (req, res) => {
     const attachment = fs.readFileSync(filename).toString("base64");
 
     // Send the email with Plunk
-    await fetch('https://api.useplunk.com/v1/send', {
+    const plunkResponse = await fetch('https://api.useplunk.com/v1/send', {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -69,8 +70,19 @@ handler.post(async (req, res) => {
         })
     });
 
+    if (!plunkResponse.ok) {
+        throw new Error(`Failed to send email: ${plunkResponse.status}`);
+    }
+
     // Return the download link to the client
     res.status(200).json({message: "Thank you! Please look out for the invite in your email."});
 
+    } catch (error) {
+        console.error('Meeting Invite Error:', error);
+        res.status(500).json({ 
+            error: 'Failed to process meeting invite',
+            details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
+    }
 });
 
