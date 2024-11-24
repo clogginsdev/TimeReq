@@ -86,7 +86,7 @@ export default function Home() {
 	};
 
 	return (
-		<div className="min-h-screen bg-neutral-950">
+		<div className="min-h-screen bg-blue-950">
 			<div className="container mx-auto">
 			<Head>
 				<title>TimeReq - Make a meeting request</title>
